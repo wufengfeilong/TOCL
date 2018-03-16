@@ -1,0 +1,16 @@
+server:
+  port: 5007
+  context-path: /TOCL
+spring:
+  thymeleaf: 
+    prefix: classpath:/static/html/
+    cache: false
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/translate?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+      username: zfw
+      password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

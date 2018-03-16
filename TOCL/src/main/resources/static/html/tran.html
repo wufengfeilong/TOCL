@@ -1,0 +1,91 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<script th:src="@{/bootstrap/js/jquery.min.js}"></script>
+		<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+		<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"></link>
+		<script src="../bootstrap/js/jquery.min.js"></script>
+		<script src="../bootstrap/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"></link>
+		<title>计算机用语查询系统</title>
+	</head>
+
+	<body>
+		<div style="padding: 100px 100px 10px;">
+			<div class="col-lg-3">
+				<div style="padding: 0px 0px 10px;" class="btn-group">
+					<button id="hanyu" style="margin: 0px 1px 10px;" type="button" class="btn btn-success">汉 语</button>
+					<button id="yingyu" style="margin: 0px 1px 10px;" type="button" class="btn">英 语</button>
+					<button id="riyu" style="margin: 0px 1px 10px;" type="button" class="btn">日 语</button>
+				</div>
+				<div class="input-group">
+					<input id="tranword" type="text" class="form-control" ></input>
+					<span class="input-group-btn">
+					<button id="search" style="margin: 0px 3px 0px;"
+						class="btn btn-primary" type="button">搜 索</button>
+				</span>
+				</div>
+
+				<div style="padding: 10px;" class="panel-body panel-primary">
+					<div class="alert alert-primary" role="alert">
+						<span><b>汉语</b></span><br/><span style="padding-left:1em;" id="china_tran"></span>
+					</div>
+					<div class="alert alert-success" role="alert">
+						<span><b>英语</b></span><br/><span style="padding-left:1em;" id="english_tran"></span>
+					</div>
+					<div class="alert alert-info" role="alert">
+						<span><b>日语</b></span><br/><span style="padding-left:1em;" id="japan_tran"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(function() {
+				var type = 1;
+				$("#hanyu").click(function() {
+					classDefault();
+					type = 1;
+					$(this).addClass('btn-success');
+				});
+				$("#yingyu").click(function() {
+					classDefault()
+					type = 2;
+					$(this).addClass('btn-success');
+				});
+				$("#riyu").click(function() {
+					classDefault()
+					type = 3;
+					$(this).addClass('btn-success');
+				});
+				$("#search").click(function() {
+					var tranword = $("#tranword").val();
+					$.ajax({
+						url: "getTran",
+						data: {
+							type: type,
+							tranword: tranword
+						},
+						dataType: "json",
+						type: "POST",
+						success: function(data) {
+							//[{"chinaTran":"按钮","englishTran":"botton","japanTran":"ボタン"}]
+							//var dataObj = JSON.parse(data);
+							$("#china_tran").text(data[0].chinaTran);
+							$("#english_tran").text(data[0].englishTran);
+							$("#japan_tran").text(data[0].japanTran);
+						}
+					});
+				});
+
+			});
+
+			function classDefault() {
+				$('#hanyu').removeClass('btn-success');
+				$('#yingyu').removeClass('btn-success');
+				$('#riyu').removeClass('btn-success');
+			}
+		</script>
+	</body>
+
+</html>
